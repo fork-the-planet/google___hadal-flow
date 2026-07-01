@@ -51,7 +51,7 @@ class TestDistribModel(tf.test.TestCase):
         tf.config.experimental_connect_to_cluster(cluster)
 
         # Register the hadal ops.
-        import hadal
+        import hadal_flow as hadal
 
         if self.job_name == labels_party_job:
             print(f"{self.job_name} server started.", flush=True)

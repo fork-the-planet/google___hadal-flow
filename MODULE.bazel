@@ -4,7 +4,6 @@ module(
 )
 
 SUPPORTED_PYTHON_VERSIONS = [
-    "3.9",
     "3.10",
     "3.11",
     "3.12",
@@ -13,7 +12,7 @@ SUPPORTED_PYTHON_VERSIONS = [
 
 DEFAULT_PYTHON = "3.12"  # Also see ./BUILD
 
-bazel_dep(name = "rules_python", version = "1.6.3")
+bazel_dep(name = "rules_python", version = "1.7.0")
 
 python = use_extension("@rules_python//python/extensions:python.bzl", "python")
 
@@ -47,10 +46,10 @@ use_repo(pip, "pip")
 # abseil, the version used here must match the version used by tensorflow.
 # See what version of abseil tensorflow is using here:
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/tools/cmake/modules/abseil-cpp.cmake#L27
-bazel_dep(name = "abseil-cpp", version = "20250127.1", repo_name = "com_google_absl")
+bazel_dep(name = "abseil-cpp", version = "20250814.2", repo_name = "com_google_absl")
 single_version_override(
     module_name = "abseil-cpp",
-    version = "20250127.1",
+    version = "20250814.2",
 )
 
 # Additionally, tensorflow headers use a protobuf version which which is a
@@ -60,15 +59,15 @@ single_version_override(
 # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/lite/tools/cmake/modules/protobuf.cmake
 # Or look at the proto files directly:
 # bazel-out/k8-opt/bin/external/_main~_repo_rules~shell_encryption/shell_encryption/serialization.pb.h
-bazel_dep(name = "protobuf", version = "28.3")
+bazel_dep(name = "protobuf", version = "31.1")
 single_version_override(
     module_name = "protobuf",
-    version = "28.3",
+    version = "31.1",
 )
 
 # Note, rule_cc is limited by the protobuf version required by
 # TensorFlow. That makes updating remaining deps below difficult.
-bazel_dep(name = "rules_cc", version = "0.2.14")
+bazel_dep(name = "rules_cc", version = "0.2.17")
 bazel_dep(name = "glog", version = "0.7.1", repo_name = "com_github_google_glog")
 bazel_dep(name = "boringssl", version = "0.20251124.0")
 bazel_dep(name = "googletest", version = "1.17.0.bcr.2")

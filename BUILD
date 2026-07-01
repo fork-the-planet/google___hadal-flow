@@ -4,7 +4,6 @@ load("@python_versions//3.10:defs.bzl", compile_pip_requirements_3_10 = "compile
 load("@python_versions//3.11:defs.bzl", compile_pip_requirements_3_11 = "compile_pip_requirements")
 load("@python_versions//3.12:defs.bzl", compile_pip_requirements_3_12 = "compile_pip_requirements")
 load("@python_versions//3.13:defs.bzl", compile_pip_requirements_3_13 = "compile_pip_requirements")
-load("@python_versions//3.9:defs.bzl", compile_pip_requirements_3_9 = "compile_pip_requirements")
 load("@rules_python//python:defs.bzl", "py_binary")
 load("@rules_python//python:packaging.bzl", "py_wheel")
 
@@ -14,7 +13,6 @@ exports_files([
     "LICENSE",
     "setup.py",
     "requirements.in",
-    "requirements_3_9.txt",
     "requirements_3_10.txt",
     "requirements_3_11.txt",
     "requirements_3_12.txt",
@@ -22,14 +20,6 @@ exports_files([
     "README.md",
     "DESCRIPTION.md",
 ])
-
-compile_pip_requirements_3_9(
-    name = "requirements_3_9",
-    extra_args = ["--allow-unsafe"],  # need setuptools
-    requirements_in = "//:requirements.in",
-    requirements_txt = "//:requirements_3_9.txt",
-    visibility = ["//visibility:public"],
-)
 
 compile_pip_requirements_3_10(
     name = "requirements_3_10",
@@ -137,7 +127,7 @@ py_wheel(
     }),
     python_requires = ">=3.9",
     python_tag = "INTERPRETER",
-    requires = ["tensorflow[and-cuda]==2.20.0"],  # See also: requirements.in.
+    requires = ["tensorflow[and-cuda]==2.21.0"],  # See also: requirements.in.
     # The summary is tailored for each python version because PyPI prevents
     # wheel uploads for different versions which have the same contents.
     # Changing the summary is sufficient to allow re-uploads.

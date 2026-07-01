@@ -80,6 +80,7 @@ py_test(
         "dpsgd_model_local_test_maeloss.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -94,6 +95,7 @@ py_test(
         "dpsgd_model_local_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -108,6 +110,7 @@ py_test(
         "dpsgd_model_float64_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -122,6 +125,7 @@ py_test(
         "dpsgd_conv_model_local_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -136,6 +140,7 @@ py_test(
         "dpsgd_model_distrib_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     env = {
         "HADAL_FILESYSTEM_PATH": "/tmp/hadal_model_distrib_test",
     },
@@ -153,6 +158,7 @@ py_test(
         "postscale_model_local_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -167,6 +173,7 @@ py_test(
         "postscale_cnn_local_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -181,6 +188,7 @@ py_test(
         "postscale_model_distrib_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",
@@ -195,6 +203,7 @@ py_test(
         "postscale_model_float64_test.py",
         "test_models.py",
     ],
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",

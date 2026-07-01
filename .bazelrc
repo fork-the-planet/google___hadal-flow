@@ -8,6 +8,14 @@ build --cxxopt='-std=c++17'
 build --cxxopt='-D_GLIBCXX_USE_CXX11_ABI=1'
 build --cxxopt='-DEIGEN_MAX_ALIGN_BYTES=64'
 
+# -Dabsl_nonnull= and -Dabsl_nullable= are compatibility flags.
+# They satisfy TensorFlow 2.21.0's extracted platform headers (e.g. threadpool.h) which
+# use lower-case absl_nonnull/absl_nullable annotation qualifiers not present in upstream
+# Abseil 20250814.2. If a future Abseil upgrade defines these natively, these preprocessor
+# flags can be safely removed.
+build --cxxopt='-Dabsl_nonnull='
+build --cxxopt='-Dabsl_nullable='
+
 # To enable asan, pass `--config=asan` to bazel.
 # If there are compilation issues with asan and absl, try making the changes
 # described by:
