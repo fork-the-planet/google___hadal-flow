@@ -140,10 +140,10 @@ py_test(
         "dpsgd_model_distrib_test.py",
         "test_models.py",
     ],
-    imports = ["./"],
     env = {
         "HADAL_FILESYSTEM_PATH": "/tmp/hadal_model_distrib_test",
     },
+    imports = ["./"],
     tags = ["exclusive"],
     deps = [
         "//hadal_ml",

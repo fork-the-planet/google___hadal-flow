@@ -58,6 +58,7 @@ buildifier(
     exclude_patterns = [
         "./bazel-*/*",
         "./.git/*",
+        "./.venv/*",
     ],
     lint_mode = "warn",
 )
