@@ -132,9 +132,8 @@ class PostScaleModel(PrivateBase):
             worst_case_jacobians = [
                 hadal.largest_case_rounding(j, scaling_factor) for j in jacobians
             ]
-            worst_case_prediction = hadal.largest_case_rounding(
-                prediction, scaling_factor
-            )
+            prediction_up = hadal.largest_case_rounding(prediction, scaling_factor)
+            prediction_down = hadal.smallest_case_rounding(prediction, scaling_factor)
 
             def cond(possible_label_i, _):
                 return possible_label_i < self.out_classes
@@ -144,6 +143,10 @@ class PostScaleModel(PrivateBase):
                     possible_label_i,
                     self.out_classes,
                     dtype=tf.keras.backend.floatx(),
+                )
+                worst_case_prediction = (
+                    possible_label * prediction_down
+                    + (1.0 - possible_label) * prediction_up
                 )
                 dJ_dz = worst_case_prediction - possible_label
                 possible_grads = self._backward(dJ_dz, worst_case_jacobians)
