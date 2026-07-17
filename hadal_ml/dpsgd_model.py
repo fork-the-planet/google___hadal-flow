@@ -80,7 +80,9 @@ class DpSgdModel(PrivateBase):
     def _backward(self, dJ_dz, sensitivity_analysis_factor=None):
         # Backward pass. dJ_dz is the derivative of the loss with respect to the
         # last layer pre-activation.
-        dJ_dw = []  # Derivatives of the loss with respect to the weights.
+        dJ_dw_layers = (
+            []
+        )  # Derivatives of the loss with respect to the weights per layer.
         dJ_dx = [dJ_dz]  # Derivatives of the loss with respect to the inputs.
         for l in reversed(self.layers):
             if "InputLayer" in getattr(l, "__class__", None).__name__:
@@ -89,10 +91,15 @@ class DpSgdModel(PrivateBase):
             dw, dx = l.backward(
                 dJ_dx[-1], sensitivity_analysis_factor=sensitivity_analysis_factor
             )
-            dJ_dw.extend(dw)
+            dJ_dw_layers.append(dw)
             dJ_dx.append(dx)
 
-        return [g for g in reversed(dJ_dw)]
+        # Reverse the order of layers, but preserve the order of variables
+        # within each layer.
+        flat_grads = []
+        for dw in reversed(dJ_dw_layers):
+            flat_grads.extend(dw)
+        return flat_grads
 
     def compute_grads(self, features, enc_labels):
         scaling_factor = (

@@ -29,6 +29,7 @@ class TestModel(tf.test.TestCase):
         disable_masking,
         disable_noise,
         cache,
+        use_bias=False,
     ):
         crop_by = 10
         features_dataset, labels_dataset, val_dataset = test_models.MNIST_datasets(
@@ -36,7 +37,7 @@ class TestModel(tf.test.TestCase):
         )
 
         inputs, outputs = test_models.MNIST_Shell_FF(
-            10, inputs=(28 - crop_by, 28 - crop_by, 1)
+            10, inputs=(28 - crop_by, 28 - crop_by, 1), use_bias=use_bias
         )
 
         m = hadal_ml.DpSgdModel(
@@ -89,6 +90,8 @@ class TestModel(tf.test.TestCase):
             self._test_model(False, True, False, cache_dir)
             self._test_model(True, True, False, cache_dir)
             self._test_model(True, True, True, cache_dir)
+            # New test case to verify layers with multiple variables (bias)
+            self._test_model(True, True, True, cache_dir, use_bias=True)
 
 
 if __name__ == "__main__":

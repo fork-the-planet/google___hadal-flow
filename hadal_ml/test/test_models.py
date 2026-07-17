@@ -139,18 +139,20 @@ def MNIST_FF(num_classes, inputs=(28, 28, 1)):
     return input_img, x
 
 
-def MNIST_Shell_FF(num_classes, inputs=(28 * 28, 1)):
+def MNIST_Shell_FF(num_classes, inputs=(28 * 28, 1), use_bias=False):
     input_img = Input(shape=inputs)
     x = hadal_ml.Flatten()(input_img)
     x = hadal_ml.ShellDense(
         64,
         activation=hadal_ml.relu,
         activation_deriv=hadal_ml.relu_deriv,
+        use_bias=use_bias,
     )(x)
     # x = hadal_ml.Dropout(0.5)(x)
     x = hadal_ml.ShellDense(
         num_classes,
         activation=tf.nn.softmax,
+        use_bias=use_bias,
     )(x)
     return input_img, x
 
