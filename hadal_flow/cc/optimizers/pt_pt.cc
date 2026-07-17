@@ -390,23 +390,24 @@ Status PtPtOptimizer::Optimize(Cluster* cluster, GrapplerItem const& item,
     TF_RETURN_IF_ERROR(mutation->Apply());
   }
 
-  // Make one final backward pass to remove any remaining encode-decode pairs.
+  // Make one final pass to remove any remaining encode-decode pairs.
   // Since encode-decode pairs will never be nested, i.e.
-  // decode(decode(encode(encode(...))), only one pass is necessary.
-  {
+  // decode(decode(encode(encode(...))), only one pass is necessary per node.
+  // We use a while loop to safely restart traversal after any graph mutation.
+  bool final_finished = false;
+  while (!final_finished) {
+    final_finished = true;
     utils::Mutation* mutation = graph_view.GetMutationBuilder();
     int const num_nodes = mutable_item.graph.node_size();
     for (int i = num_nodes - 1; i >= 0; --i) {
       if (FindAndRemapEncDec(graph_view, i, mutation)) {
         // Apply the mutations immediately so subsequent remap operations can
-        // see the updated graph. This is required to correctly update fanouts
-        // of removed decode nodes.
+        // see the updated graph.
         TF_RETURN_IF_ERROR(mutation->Apply());
-
-        // Some nodes may have been removed, make sure i is still valid.
-        if (i >= mutable_item.graph.node_size()) {
-          i = mutable_item.graph.node_size() - 1;
-        }
+        // The graph structure has changed, so restart traversal to avoid
+        // index shifting bugs.
+        final_finished = false;
+        break;
       }
     }
   }

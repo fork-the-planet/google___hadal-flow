@@ -322,3 +322,19 @@ py_test(
         requirement("tensorflow"),
     ],
 )
+
+py_test(
+    name = "flaky_grappler_test",
+    size = "small",
+    srcs = [
+        "flaky_grappler_test.py",
+    ],
+    imports = ["./"],
+    deps = [
+        "//hadal_flow:hadal_flow_lib",
+        "//hadal_ml",
+        requirement("tensorflow"),
+        requirement("keras"),
+        requirement("numpy"),
+    ],
+)
